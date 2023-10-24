@@ -1,26 +1,40 @@
 import { ProductManager } from "./app";
-import { skirt, shirt, pants, shoes } from "./data";
+import { skirt, shirt, pants, shoes } from "./data/products.data";
+
+// Path: src/index.ts
+const filePath = __dirname + "/data/products.json";
 
 // Create a new instance of ProductManager
-const productManager = new ProductManager();
+const productManager = new ProductManager(filePath);
 
-// Show all products (empty)
-// console.log(productManager.getProducts());
+const environment = async () => {
+  try {
+    // Read the products from the file
+    // const products = await productManager.getProducts();
+    // console.log(products);
 
-// Add the products
-// productManager.addProduct(skirt);
-// productManager.addProduct(shirt);
-// productManager.addProduct(pants);
-// productManager.addProduct(shoes);
+    // Add a new product
+    // await productManager.addProduct(shirt);
+    // await productManager.addProduct(pants);
+    // await productManager.addProduct(shoes);
+    // await productManager.addProduct(skirt);
 
-// Show all products (2) with ID autoincremented.
-// console.log(productManager.getProducts());
+    // Read the products from the file
+    // const products = await productManager.getProducts();
+    // console.log(products);
 
-// Add a product with the same code
-// productManager.addProduct(shirt);
+    // Get a product by id
+    // const product = await productManager.getProductByID(3);
+    // console.log(product);
 
-// Get a product by id
-// console.log(productManager.getProductById(2));
+    // Update a product by id
+    // await productManager.updateProductByID(3, { price: 1000 });
 
-// Get a product by id that doesn't exist
-// productManager.getProductById(5);
+    // Delete a product by id
+    // productManager.deleteProductByID(1);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+environment();
