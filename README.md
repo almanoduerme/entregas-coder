@@ -1,6 +1,6 @@
-## Manejo de archivos
+## Servidor con Express
 
-Realizar una clase de nombre “ProductManager”, el cual permitirá trabajar con múltiples productos. Éste debe poder agregar, consultar, modificar y eliminar un producto y manejarlo en persistencia de archivos (basado en entregable 1).
+Desarrollar un servidor basado en Express donde podamos hacer consultas a nuestro archivo de productos.
 
 - How to run the project
 

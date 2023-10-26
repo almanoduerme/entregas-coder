@@ -1,109 +1,42 @@
-import fs from "fs";
-import { Product } from "./interfaces/product.interface";
+import express, { Application, Request, Response, NextFunction } from "express";
+import productRouter from "./routes/products.route";
 
-export class ProductManager {
-  private path: string;
+export class Server {
+  private app: Application;
+  private port: number;
 
-  constructor(productsFilePath: string) {
-    this.path = productsFilePath;
+  constructor(port: number) {
+    this.app = express();
+    this.port = port;
   }
 
-  private async writeFile(products: Product[]): Promise<void> {
-    try {
-      await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2), "utf-8");
-    } catch (error) {
-      throw new Error(`Error writing file: ${error}`);
-    }
+  private middlewares() {
+    this.app.use(express.json());
+    this.app.use(this.errorHandler);
   }
 
-  private async readFile(): Promise<Product[] | []> {
-    if (fs.existsSync(this.path)) {
-      return JSON.parse(await fs.promises.readFile(this.path, "utf-8"));
-    } else {
-      return [];
-    }
+  private routes() {
+    this.app.use("/", productRouter);
+
+    this.app.use("*", (req: Request, res: Response) => {
+      res.status(404).json({ message: "Route not found" });
+    });
   }
 
-  public async getProducts(): Promise<Product[]> {
-    try {
-      const products = await this.readFile();
-      return products;
-    } catch (error) {
-      throw new Error(`Error getting products: ${error}`);
-    }
+  private errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+    console.error(`Error occurred: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 
-  public async addProduct(product: Product): Promise<void> {
-    try {
-      const products = await this.readFile();
-
-      const newProduct = {
-        id: products.length + 1,
-        ...product,
-      };
-
-      await this.writeFile([...products, newProduct]);
-    } catch (error) {
-      throw new Error(`Error adding product: ${error}`);
-    }
+  private listen() {
+    this.app.listen(this.port, () => {
+      console.log(`App listening on the port ${this.port}`);
+    });
   }
 
-  public async getProductByID(id: number): Promise<Product> {
-    try {
-      const products = await this.readFile();
-      const product = products.find((product) => product.id === id);
-
-      if (!product) {
-        throw new Error("Product not found");
-      }
-
-      return product;
-    } catch (error) {
-      throw new Error(`Error getting product: ${error}`);
-    }
-  }
-
-  public async updateProductByID(id: number, updatedProduct: Partial<Product>): Promise<void> {
-    try {
-      const products = await this.readFile();
-      const productIndex = products.findIndex((product) => product.id === id);
-
-      if (productIndex === -1) {
-        throw new Error("Product not found");
-      }
-
-      const updatedProducts = products.map((product: Product) => {
-        if (product.id === id) {
-          return {
-            ...product,
-            ...updatedProduct,
-          };
-        }
-        return product;
-      });
-
-      await this.writeFile(updatedProducts);
-    } catch (error) {
-      throw new Error(`Error updating product: ${error}`);
-    }
-  }
-
-  public async deleteProductByID(id: number): Promise<void> {
-    try {
-      const products = await this.readFile();
-
-      // Check if the product with the specified ID exists
-      const productIndex = products.findIndex((product) => product.id === id);
-
-      if (productIndex === -1) {
-        throw new Error("Product not found");
-      }
-
-      const updatedProducts = products.filter((product) => product.id !== id);
-
-      await this.writeFile(updatedProducts);
-    } catch (error) {
-      throw new Error(`Error deleting product: ${error}`);
-    }
+  public async start() {
+    this.middlewares();
+    this.routes();
+    this.listen();
   }
 }
