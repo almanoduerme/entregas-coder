@@ -1,7 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import productRouter from "./routes/products.route";
+import { productsRoute, cartRoute } from "./routes";
 
-export class Server {
+export  class Server {
   private app: Application;
   private port: number;
 
@@ -12,11 +12,13 @@ export class Server {
 
   private middlewares() {
     this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(this.errorHandler);
   }
 
   private routes() {
-    this.app.use("/", productRouter);
+    this.app.use("/api/products", productsRoute);
+    this.app.use("/api/carts", cartRoute);
 
     this.app.use("*", (req: Request, res: Response) => {
       res.status(404).json({ message: "Route not found" });
@@ -30,7 +32,7 @@ export class Server {
 
   private listen() {
     this.app.listen(this.port, () => {
-      console.log(`App listening on the port ${this.port}`);
+      console.log(`App listening on http://localhost:${this.port}`);
     });
   }
 

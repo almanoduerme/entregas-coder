@@ -1,6 +1,6 @@
 import { Server } from "./app";
 
-const PORT = 3000;
+const PORT = 8080;
 const server = new Server(PORT);
 
 server.start();

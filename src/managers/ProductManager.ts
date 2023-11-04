@@ -1,5 +1,6 @@
 import fs from "fs";
-import { Product } from "../interfaces/product.interface";
+import * as crypto from "crypto";
+import { Product, ProductPreview } from "../interfaces";
 
 export class ProductManager {
   private productsFilePath: string;
@@ -33,14 +34,13 @@ export class ProductManager {
     }
   }
 
-  // No use in this challenge.
-  public async addProduct(product: Product): Promise<void> {
+  public async addProduct(product: ProductPreview): Promise<void> {
     try {
       const products = await this.readFile();
 
       const newProduct = {
-        id: products.length + 1,
-        ...product,
+        id: crypto.randomBytes(16).toString("hex"),
+        ...product
       };
 
       await this.writeFile([...products, newProduct]);
@@ -49,58 +49,59 @@ export class ProductManager {
     }
   }
 
-  public async getProductByID(id: number): Promise<Product | undefined> {
+  public async getProductByID(id: string): Promise<Product | undefined> {
     try {
       const products = await this.readFile();
-      const product = products.find((product) => product.id === id);
 
+      const product = products.find((product) => product.id === id);
       return product;
     } catch (error) {
       throw new Error(`Error getting product: ${error}`);
     }
   }
 
-  // No use in this challenge.
-  public async updateProductByID(id: number, updatedProduct: Partial<Product>): Promise<void> {
+  public async updateProductByID(id: string, updatedProduct: Partial<Product>): Promise<void> {
     try {
       const products = await this.readFile();
-      const productIndex = products.findIndex((product) => product.id === id);
-
-      if (productIndex === -1) {
+      const product = products.find((product) => product.id === id);
+      
+      if (!product) {
         throw new Error("Product not found");
       }
-
-      const updatedProducts = products.map((product: Product) => {
-        if (product.id === id) {
-          return {
-            ...product,
-            ...updatedProduct,
-          };
-        }
-        return product;
-      });
-
-      await this.writeFile(updatedProducts);
+      
+      if (!updatedProduct.title && !updatedProduct.description && !updatedProduct.code && !updatedProduct.price && !updatedProduct.stock && !updatedProduct.thumbnail && !updatedProduct.status && !updatedProduct.category) {
+        throw new Error("Missing required information");
+      }
+      
+      const allowedUpdates = ["title", "description", "code", "price", "stock", "status", "category"];
+      const invalidUpdates = Object.keys(updatedProduct).filter((update) => !allowedUpdates.includes(update));
+      
+      if (invalidUpdates.length > 0) {
+        throw new Error(`Invalid update: ${invalidUpdates.join(", ")}`);
+      }
+      
+      Object.assign(product, updatedProduct);
+      
+      await this.writeFile(products);
+      return;
     } catch (error) {
       throw new Error(`Error updating product: ${error}`);
     }
   }
 
-  // No use in this challenge.
-  public async deleteProductByID(id: number): Promise<void> {
+  public async deleteProductByID(id: string): Promise<void> {
     try {
       const products = await this.readFile();
 
-      // Check if the product with the specified ID exists
-      const productIndex = products.findIndex((product) => product.id === id);
+      const productIndex = products.findIndex((product) => product.id as string === id.toString());
 
       if (productIndex === -1) {
         throw new Error("Product not found");
       }
 
       const updatedProducts = products.filter((product) => product.id !== id);
-
       await this.writeFile(updatedProducts);
+      return;
     } catch (error) {
       throw new Error(`Error deleting product: ${error}`);
     }

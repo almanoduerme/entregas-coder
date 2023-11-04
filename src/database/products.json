@@ -1,92 +1,15 @@
 [
   {
-    "id": 1,
-    "title": "Skirt 001",
-    "description": "A skirt",
-    "price": 100,
-    "thumbnail": "skirt.jpg",
-    "code": "skirt",
-    "stock": 10
-  },
-  {
-    "id": 2,
-    "title": "T-shirt 002",
-    "description": "A t-shirt",
-    "price": 200,
-    "thumbnail": "t-shirt.jpg",
-    "code": "t-shirt",
-    "stock": 10
-  },
-  {
-    "id": 3,
-    "title": "Shoes 003",
-    "description": "A pair of shoes",
-    "price": 300,
-    "thumbnail": "shoes.jpg",
-    "code": "shoes",
-    "stock": 10
-  },
-  {
-    "id": 4,
-    "title": "Dress 004",
-    "description": "A beautiful dress for any occasion",
-    "price": 150,
-    "thumbnail": "dress.jpg",
-    "code": "dress",
-    "stock": 15
-  },
-  {
-    "id": 5,
-    "title": "Jeans 005",
-    "description": "Comfortable jeans for everyday wear",
-    "price": 120,
-    "thumbnail": "jeans.jpg",
-    "code": "jeans",
-    "stock": 20
-  },
-  {
-    "id": 6,
-    "title": "Hat 006",
-    "description": "Stylish hat to complement your outfit",
-    "price": 50,
-    "thumbnail": "hat.jpg",
-    "code": "hat",
-    "stock": 25
-  },
-  {
-    "id": 7,
-    "title": "Sunglasses 007",
-    "description": "Trendy sunglasses to protect your eyes from the sun",
-    "price": 80,
-    "thumbnail": "sunglasses.jpg",
-    "code": "sunglasses",
-    "stock": 18
-  },
-  {
-    "id": 8,
-    "title": "Jacket 008",
-    "description": "Warm and fashionable jacket for chilly days",
-    "price": 180,
-    "thumbnail": "jacket.jpg",
-    "code": "jacket",
-    "stock": 12
-  },
-  {
-    "id": 9,
-    "title": "Shorts 009",
-    "description": "Casual shorts for a relaxed look",
-    "price": 70,
-    "thumbnail": "shorts.jpg",
-    "code": "shorts",
-    "stock": 22
-  },
-  {
-    "id": 10,
-    "title": "Sweater 010",
-    "description": "Cozy sweater to keep you warm in style",
-    "price": 130,
-    "thumbnail": "sweater.jpg",
-    "code": "sweater",
-    "stock": 14
+    "id": "9a38a8ad5db3687016eb93123e7a824f",
+    "title": "Printed Scarf",
+    "description": "Soft and lightweight scarf with a vibrant print, adds a pop of color to any outfit.",
+    "code": "SCF020",
+    "price": 14.99,
+    "stock": 220,
+    "thumbnail": [
+      "printed_scarf.jpg"
+    ],
+    "status": true,
+    "category": "Accessories"
   }
 ]
