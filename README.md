@@ -1,6 +1,6 @@
-## Servidor con Express
+## Primera entrega del proyecto final
 
-Desarrollar un servidor basado en Express donde podamos hacer consultas a nuestro archivo de productos.
+Se desarrollará un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce.
 
 - How to run the project
 
