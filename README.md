@@ -1,6 +1,6 @@
-## Primera entrega del proyecto final
+# Websockets
 
-Se desarrollará un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce.
+Configurar nuestro proyecto para que trabaje con Handlebars y websocket.
 
 - How to run the project
 

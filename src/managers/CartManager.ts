@@ -2,7 +2,7 @@ import fs from "fs";
 import * as crypto from "crypto";
 import path from "path";
 import { ProductManager } from "./ProductManager";
-import { baseDirectory } from "../utils/baseDirectory";
+import { baseDirectory } from "../utils";
 import { Cart } from "../interfaces";
 
 const productsFilePath = path.join(baseDirectory, "database/products.json");

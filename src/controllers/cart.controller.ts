@@ -2,7 +2,7 @@ import path from "path";
 import { Request, Response } from "express";
 import { Cart, ProductIncart } from "../interfaces";
 import { CartManager, ProductManager } from "../managers";
-import { baseDirectory } from "../utils/baseDirectory";
+import { baseDirectory } from "../utils";
 
 const cartsFilePath = path.join(baseDirectory, "database/carts.json");
 const cartManager = new CartManager(cartsFilePath);

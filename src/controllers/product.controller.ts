@@ -2,7 +2,7 @@ import path from "path";
 import { Request, Response } from "express";
 import { Product, ProductBase } from "../interfaces";
 import { ProductManager } from "../managers";
-import { baseDirectory } from "../utils/baseDirectory";
+import { baseDirectory } from "../utils";
 
 const productsFilePath = path.join(baseDirectory, "database/products.json");
 const productManager = new ProductManager(productsFilePath);
@@ -28,7 +28,8 @@ export class ProductController {
         return;
       }
 
-      res.status(200).json(products);
+      // res.status(200).json(products);
+      res.status(200).render("home", { products });
     } catch (error) {
       console.error("Error:", error);
       res.status(500).json({ error: "Internal server error" });
@@ -107,5 +108,9 @@ export class ProductController {
     } catch (error) {
       res.status(500).json({ error: "Internal server error" });
     }
+  }
+
+  public static async hbs(req: Request, res: Response): Promise<void> {
+    res.render("home", { id: 1, name: "John Doe" });
   }
 }

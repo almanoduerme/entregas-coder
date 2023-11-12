@@ -1,0 +1,28 @@
+{{#if products}}
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Code</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr class="product-row">
+          <td>{{this.title}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.code}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.stock}}</td>
+          <td>{{this.category}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <p class="text-center">No products to display</p>
+{{/if}}

@@ -1,6 +1,6 @@
 import fs from "fs";
 import * as crypto from "crypto";
-import { Product, ProductPreview } from "../interfaces";
+import { Product, ProductBase } from "../interfaces";
 
 export class ProductManager {
   private productsFilePath: string;
@@ -34,7 +34,7 @@ export class ProductManager {
     }
   }
 
-  public async addProduct(product: ProductPreview): Promise<void> {
+  public async addProduct(product: ProductBase): Promise<void> {
     try {
       const products = await this.readFile();
 

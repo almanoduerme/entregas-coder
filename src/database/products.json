@@ -1,15 +1,22 @@
 [
   {
-    "id": "9a38a8ad5db3687016eb93123e7a824f",
-    "title": "Printed Scarf",
-    "description": "Soft and lightweight scarf with a vibrant print, adds a pop of color to any outfit.",
-    "code": "SCF020",
-    "price": 14.99,
-    "stock": 220,
-    "thumbnail": [
-      "printed_scarf.jpg"
-    ],
-    "status": true,
-    "category": "Accessories"
+    "id": "0295b90e8e9d89dcd58dc078e5e38964",
+    "title": "Classic Denim Jacket",
+    "description": "A timeless wardrobe staple this classic denim jacket is perfect for casual",
+    "code": "CDJ001",
+    "price": "49",
+    "stock": "20",
+    "category": "Outerwear",
+    "status": true
+  },
+  {
+    "id": "4fa7678ec6081b766fa8f6bab2af361b",
+    "title": "Cozy Knit Sweater",
+    "description": "Stay warm and stylish with our cozy knit sweater",
+    "code": "CKS003",
+    "price": "39",
+    "stock": "100",
+    "category": "Sweaters",
+    "status": true
   }
 ]

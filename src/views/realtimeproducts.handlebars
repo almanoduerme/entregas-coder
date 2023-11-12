@@ -1,0 +1,20 @@
+<h1 class="realtime-products-title">Real Time Products</h1>
+
+<form id="product-form">
+  <input type="text" name="title" placeholder="Title" id="title" autocomplete="off">
+  <input type="text" name="description" placeholder="Description" id="description" autocomplete="off">
+  <input type="text" name="code" placeholder="Code" id="code" autocomplete="off">
+  <input type="text" name="price" placeholder="Price" id="price" autocomplete="off">
+  <input type="text" name="stock" placeholder="Stock" id="stock" autocomplete="off">
+  <input type="text" name="category" placeholder="Category" id="category" autocomplete="off">
+  <div class="form-group">
+    <label for="status">Status:</label>
+    <input type="checkbox" name="status" id="status">
+    <input type="submit" value="Send" id="send">
+  </div>
+</form>
+
+<div id="div-container-products-table"></div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/websocket.js"></script>

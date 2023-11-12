@@ -1,4 +1,4 @@
-export interface ProductBase {
+interface ProductBase {
   title: string;
   description: string;
   code: string;
@@ -9,8 +9,8 @@ export interface ProductBase {
   thumbnail: string[];
 }
 
-export interface Product extends ProductBase {
+interface Product extends ProductBase {
   id: string;
 }
 
-export type ProductPreview = Omit<ProductBase, "id">;
+export { ProductBase, Product };
