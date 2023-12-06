@@ -1,6 +1,6 @@
-# Websockets
+# Desafio complementario
 
-Configurar nuestro proyecto para que trabaje con Handlebars y websocket.
+Continuar sobre el proyecto que has trabajado para tu ecommerce.
 
 - How to run the project
 

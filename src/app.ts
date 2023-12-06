@@ -2,9 +2,17 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import { createServer, Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import { engine } from "express-handlebars";
-import { cartRoute, handlebarsRouter, productsRoute, webSocketRoute } from "./routes";
+import { cartRoute, productsRoute, webSocketRoute } from "./routes";
 import { baseDirectory } from "./utils";
-import { ProductSocket } from "./sockets";
+import { ChatSocket, ProductSocket } from "./sockets";
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Mongoose connection
+import { MongooseConnection } from "./databases/mongodb";
+const keyMongoDB: string = process.env.MONGO_URL || "";
 
 export class Server {
   private app: Application;
@@ -14,6 +22,7 @@ export class Server {
   private io: SocketServer;
 
   private productSocket: ProductSocket;
+  private chatSocket: ChatSocket;
 
   constructor(port: number) {
     this.app = express();
@@ -23,6 +32,7 @@ export class Server {
     this.io = new SocketServer(this.server);
 
     this.productSocket = new ProductSocket(this.io);
+    this.chatSocket = new ChatSocket(this.io);
 
     // handlebars
     this.app.engine("handlebars", engine());
@@ -39,23 +49,24 @@ export class Server {
     this.app.use(this.errorHandler);
   }
 
-  private sockets(): void {
-    this.productSocket.initializeSocket();
+  private connectToDatabase(): void {
+    const mongoConnection = new MongooseConnection(keyMongoDB);
+    mongoConnection.connect();
   }
 
   private routes() {
-    this.app.use("/api/products", productsRoute);
+    this.app.use("/products", productsRoute);
     this.app.use("/api/carts", cartRoute);
-
-    // Handlebars
-    this.app.use("/", handlebarsRouter);
-
-    // Websocket
-    this.app.use("/", webSocketRoute);
+    this.app.use("/chat", webSocketRoute);
 
     this.app.use("*", (req: Request, res: Response) => {
       res.status(404).json({ message: "Route not found" });
     });
+  }
+
+  private sockets(): void {
+    this.productSocket.initializeSocket();
+    this.chatSocket.initializeSocket();
   }
 
   private errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
@@ -78,6 +89,7 @@ export class Server {
   public start(): void {
     this.sockets();
     this.middlewares();
+    this.connectToDatabase();
     this.routes();
     this.listen();
   }

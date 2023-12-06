@@ -1,9 +1,11 @@
 import { Request, Response, Router } from "express";
+import { Message as MessageModelMongoDB } from "../daos/models/messages.model";
+import { ChatSocket } from "../sockets/chat/index";
 
-const webSocketRoute = Router();
+const webSocketRouter = Router();
 
-webSocketRoute.get("/realtimeproducts", (req: Request, res: Response) => {
-  res.render("realtimeproducts"); 
+webSocketRouter.get("/", (req: Request, res: Response) => {
+  res.render("chat", { layout: "main" });
 });
 
-export default webSocketRoute;
+export default webSocketRouter;

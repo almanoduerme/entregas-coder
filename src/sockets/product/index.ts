@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { Product } from "../../interfaces";
-import { ProductManager } from "../../managers";
+import { ProductManager } from "../../daos/managers";
 import { baseDirectory } from "../../utils";
 
 class ProductSocket {
@@ -26,7 +26,7 @@ class ProductSocket {
 
       // Receive new product from client and broadcast to all clients
       socket.on('newProduct', async (product: Product) => {
-        await this.productManager.addProduct(product);
+        await this.productManager.createProduct(product);
         await this.emitUpdatedProducts();
       });
 

@@ -1,6 +1,6 @@
 import fs from "fs";
 import * as crypto from "crypto";
-import { Product, ProductBase } from "../interfaces";
+import { Product, ProductBase } from "../../interfaces";
 
 export class ProductManager {
   private productsFilePath: string;
@@ -34,7 +34,7 @@ export class ProductManager {
     }
   }
 
-  public async addProduct(product: ProductBase): Promise<void> {
+  public async createProduct(product: ProductBase): Promise<void> {
     try {
       const products = await this.readFile();
 
@@ -69,7 +69,7 @@ export class ProductManager {
         throw new Error("Product not found");
       }
       
-      if (!updatedProduct.title && !updatedProduct.description && !updatedProduct.code && !updatedProduct.price && !updatedProduct.stock && !updatedProduct.thumbnail && !updatedProduct.status && !updatedProduct.category) {
+      if (!updatedProduct.title && !updatedProduct.description && !updatedProduct.code && !updatedProduct.price && !updatedProduct.stock && !updatedProduct.thumbnails && !updatedProduct.status && !updatedProduct.category) {
         throw new Error("Missing required information");
       }
       

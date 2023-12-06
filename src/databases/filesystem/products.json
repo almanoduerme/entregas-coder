@@ -18,5 +18,19 @@
     "stock": "100",
     "category": "Sweaters",
     "status": true
+  },
+  {
+    "id": "39e3ee1e7afc5fd3c428c30f7e892471",
+    "title": "Producto 2",
+    "description": "Descripcion 2",
+    "code": "1236",
+    "price": 100,
+    "stock": 10,
+    "thumbnails": [
+      "https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png",
+      "https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png"
+    ],
+    "status": true,
+    "category": "Categoria "
   }
 ]

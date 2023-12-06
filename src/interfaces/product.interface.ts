@@ -6,7 +6,7 @@ interface ProductBase {
   status: boolean;
   stock: number;
   category: string;
-  thumbnail: string[];
+  thumbnails: string[];
 }
 
 interface Product extends ProductBase {
