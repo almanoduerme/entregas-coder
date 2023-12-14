@@ -11,3 +11,12 @@ export interface ProductIncart {
 export interface ProductDetail extends ProductIncart {
   quantity: number;
 }
+
+export interface CartReturn {
+  _id: string;
+  products: {
+    product: string;
+    quantity: number;
+    _id: string;
+  }[];
+}

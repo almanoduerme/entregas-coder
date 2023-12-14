@@ -1,8 +1,12 @@
-# Desafio complementario
+# Segunda entrega del proyecto
 
-Continuar sobre el proyecto que has trabajado para tu ecommerce.
+- Contarás con Mongo como sistema de persistencia principal.
+- Tendrás definidos todos los endpoints para poder trabajar con productos y carritos.
 
-- How to run the project
+- Profesionalizar las consultas de productos con filtros, paginación y ordenamientos
+- Profesionalizar la gestión de carrito para implementar los últimos conceptos vistos.
+
+## How to run the project
 
 ```bash
 pnpm install

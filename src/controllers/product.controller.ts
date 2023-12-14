@@ -1,42 +1,90 @@
-import path from "path";
 import { Request, Response } from "express";
 import { Product, ProductBase } from "../interfaces";
-import { ProductManager } from "../daos/managers";
-import { baseDirectory } from "../utils";
-
-// =================== MongoDB =================== //
-import { Product as ProductModelMongoDB } from "../daos/models/product.model";
+import { Product as ProductModelMongoDB } from "../daos/models/product/product.model";
 import mongoose from "mongoose";
 
-const productsFilePath = path.join(baseDirectory, "database/products.json");
-const productManager = new ProductManager(productsFilePath);
+interface QueryParams {
+  limit?: string;
+  page?: string;
+  query?: string;
+  sort?: string;
+  category?: string;
+  available?: string;
+  status?: string;
+}
+
+enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
 
 export class ProductController {
   public static async getProducts(req: Request, res: Response): Promise<void> {
     try {
-      const { limit } = req.query;
-      // let products: Product[] = await productManager.getProducts();
-      let products: Product[] = await ProductModelMongoDB.find().lean();
+      const { limit = '10', page = '1', query = '', sort, category, available, status }: QueryParams = req.query;
 
-      if (products.length === 0) {
-        res.status(404).json({ error: "Don't have any products" });
-        return;
+      const parsedLimit = parseInt(limit, 10);
+      const parsedPage = parseInt(page, 10);
+      const skip = (parsedPage - 1) * parsedLimit;
+
+      const sortOptions: [string, SortOrder][] = [];
+      if (sort) {
+        const [key, sortOrder] = sort.split(':');
+        sortOptions.push([key, sortOrder === SortOrder.DESC ? SortOrder.DESC : SortOrder.ASC]);
       }
 
-      if (limit) {
-        const limitNumber = parseInt(limit as string, 10);
-        products = products.slice(0, limitNumber);
+      const searchOptions: Record<string, any> = {};
+
+      if (query) {
+        const regexQuery = { $regex: query, $options: 'i' };
+        searchOptions.$or = [
+          { title: regexQuery },
+          { description: regexQuery },
+          { category: regexQuery },
+        ];
       }
 
-      if (products.length === 0) {
-        res.status(404).json({ error: "Products not found within the specified limit" });
-        return;
+      if (category) {
+        searchOptions.category = category;
       }
 
-      res.status(200).render("home", { products });
+      if (available !== undefined) {
+        searchOptions.stock = available === 'true' ? { $gt: 0 } : 0;
+      }
+
+      if (status !== undefined) {
+        searchOptions.status = status === 'true';
+      }
+
+      const [products, totalProducts] = await Promise.all([
+        ProductModelMongoDB.find(searchOptions)
+          .limit(parsedLimit)
+          .skip(skip)
+          .sort(Object.fromEntries(sortOptions)),
+        ProductModelMongoDB.countDocuments(searchOptions),
+      ]);
+
+      const totalPages = Math.ceil(totalProducts / parsedLimit);
+      const hasPrevPage = parsedPage > 1;
+      const hasNextPage = parsedPage < totalPages;
+      const prevLink = hasPrevPage ? true : false;
+      const nextLink = hasNextPage ? true : false;
+
+      res.status(200).json({
+        status: products.length ? 'success' : 'error',
+        payload: products,
+        totalPages,
+        prevPage: hasPrevPage ? parsedPage - 1 : null,
+        nextPage: hasNextPage ? parsedPage + 1 : null,
+        page: parsedPage,
+        hasPrevPage,
+        hasNextPage,
+        prevLink : prevLink ? `/products?page=${parsedPage - 1}&limit=${parsedLimit}` : null,
+        nextLink : nextLink ? `/products?page=${parsedPage + 1}&limit=${parsedLimit}` : null,
+      });
     } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal server error" });
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -49,7 +97,6 @@ export class ProductController {
         return;
       }
 
-      // const product: Product | undefined = await productManager.getProductByID(id);
       const product = await ProductModelMongoDB.findById(id).lean();
 
       if (!product) {
@@ -73,7 +120,6 @@ export class ProductController {
         return;
       }
 
-      // const products = await productManager.getProducts();
       const products = await ProductModelMongoDB.find();
       const productExists = products.find((product) => product.code === code);
 
@@ -83,7 +129,6 @@ export class ProductController {
       }
 
       const newProduct: ProductBase = { title, description, code, price, stock, thumbnails, status, category };
-      // const product = await productManager.createProduct(newProduct);
       const product = await ProductModelMongoDB.create(newProduct);
 
       if (!product) {
@@ -109,7 +154,6 @@ export class ProductController {
     const updatedProduct: Partial<Product> = req.body;
 
     try {
-      // await productManager.updateProductByID(id, updatedProduct);
       await ProductModelMongoDB.findByIdAndUpdate(id, updatedProduct);
       res.status(200).json({ message: 'Product updated successfully' });
     } catch (error) {
@@ -126,7 +170,6 @@ export class ProductController {
         return;
       }
 
-      // const product = await productManager.getProductByID(id);
       const product = await ProductModelMongoDB.findById(id);
 
       if (!product) {
@@ -134,7 +177,6 @@ export class ProductController {
         return;
       }
 
-      // await productManager.deleteProductByID(id);
       await ProductModelMongoDB.findByIdAndDelete(id);
       res.status(200).json(`Product with id ${id} deleted`);
     } catch (error) {

@@ -17,6 +17,9 @@ dependencies:
   mongoose:
     specifier: ^8.0.2
     version: 8.0.2
+  mongoose-paginate-v2:
+    specifier: ^1.7.4
+    version: 1.7.4
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
@@ -956,6 +959,11 @@ packages:
       '@mongodb-js/saslprep': 1.1.1
       bson: 6.2.0
       mongodb-connection-string-url: 2.6.0
+    dev: false
+
+  /mongoose-paginate-v2@1.7.4:
+    resolution: {integrity: sha512-2oUOH/2hrtW0Ki5dJbwxsLBeVafVBfE84QiJsr7tYBQVxUk1v5usDvRa29LpBtANMpBe7eeLUTI2tyjLSk3/Yg==}
+    engines: {node: '>=4.0.0'}
     dev: false
 
   /mongoose@8.0.2:

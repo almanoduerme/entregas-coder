@@ -1,6 +1,3 @@
-// This can be used to manage the chat, it can be used to add, delete, get and delete all messages from the chat.
-// The persistence of the chat will be changed to a database (MongoDB) in the future.
-
 import fs from "fs";
 
 export interface UserChat {
