@@ -8,6 +8,8 @@ import { ChatSocket, ProductSocket } from "./sockets";
 
 import dotenv from "dotenv";
 
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
+
 dotenv.config();
 
 // Mongoose connection
@@ -34,8 +36,8 @@ export class Server {
     this.productSocket = new ProductSocket(this.io);
     this.chatSocket = new ChatSocket(this.io);
 
-    // handlebars
-    this.app.engine("handlebars", engine());
+    // Handlebars
+    this.app.engine("handlebars", engine({ handlebars: allowInsecurePrototypeAccess(require("handlebars"))}));
     this.app.set("view engine", "handlebars");
     this.app.set("views", `${baseDirectory}/views`);
 

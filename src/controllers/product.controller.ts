@@ -70,9 +70,24 @@ export class ProductController {
       const prevLink = hasPrevPage ? true : false;
       const nextLink = hasNextPage ? true : false;
 
-      res.status(200).json({
+      // res.status(200).json({
+      //   status: products.length ? 'success' : 'error',
+      //   payload: products,
+      //   totalPages,
+      //   prevPage: hasPrevPage ? parsedPage - 1 : null,
+      //   nextPage: hasNextPage ? parsedPage + 1 : null,
+      //   page: parsedPage,
+      //   hasPrevPage,
+      //   hasNextPage,
+      //   prevLink : prevLink ? `/products?page=${parsedPage - 1}&limit=${parsedLimit}` : null,
+      //   nextLink : nextLink ? `/products?page=${parsedPage + 1}&limit=${parsedLimit}` : null,
+      // });
+
+      // Send response to Handlebars.
+
+      res.status(200).render("products", {
         status: products.length ? 'success' : 'error',
-        payload: products,
+        products,
         totalPages,
         prevPage: hasPrevPage ? parsedPage - 1 : null,
         nextPage: hasNextPage ? parsedPage + 1 : null,
